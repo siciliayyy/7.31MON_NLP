@@ -1,0 +1,61 @@
+---
+model: Vnet
+
+pathing:
+  run_date: 8_29
+  model_save_dir: ./result/models/
+  results_save_dir: ./results/
+  train_img_dirs: 
+    - E:/savefromxftp/5.22MON/data/dataset-verse20training/rawdata/
+  train_mask_dirs:
+    - E:/savefromxftp/5.22MON/data/dataset-verse20training/derivatives/
+  val_img_dirs:
+    - E:/savefromxftp/5.22MON/data/dataset-verse20validation/rawdata/
+  val_mask_dirs:
+    - E:/savefromxftp/5.22MON/data/dataset-verse20validation/derivatives/
+  test_img_dirs:
+    - E:/savefromxftp/5.22MON/data/dataset-verse20test/rawdata/
+  test_mask_dirs:
+    - E:/savefromxftp/5.22MON/data/dataset-verse20test/derivatives/
+
+dataset:
+  size: (64,64,64)
+  spacing: (1,1,1)
+  patch_size: (64,64,64)
+  patch_stride: (64,64,64)
+  gaussian_filter_sigma: 0.125
+  batch_size: 8
+  resize_dims:
+    D: 64
+    H: 64
+    W: 64
+  clamp_hu: True
+  clamp_hu_range:
+    min: 0
+    max: 255
+  random_hflip: True
+  random_hflip_probability: 0.5
+  scale_img: True
+  scale_img_range:
+    min: 0.8
+    max: 1.2
+  shuffle: True
+
+training:
+  optimizer: Adam
+  learning_rate: 0.01
+  epochs: 200
+  momentum: 0.5
+  use_scheduler: True
+  scheduler: StepLR
+  scheduler_step: 15
+  scheduler_gamma: 0.8
+  criterion: FusionLoss
+  class_weights:
+    background: 0.2
+    liver: 1.2
+    lesion: 2.2
+
+gpu:
+  use_gpu: True
+  gpu_name: cuda:0
